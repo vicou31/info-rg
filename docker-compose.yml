@@ -1,0 +1,61 @@
+# Start the app using docker-compose pull && docker-compose up to make sure you have the latest image
+version: '3'
+
+services:
+  web:
+    image: registry.gitlab.com/vicou31/info-rg:latest
+    # The server uses some of these ports via ServerConfig.scala. Keep them in sync with docker.compose.yml
+    ports:
+      # Requests to the container are mapped from port 80 on the host to port 8080 in the container
+      - "80:8080"
+      # Map from the default HTTPS port to the port where Akka HTTP listens for encrypted connections
+      - "443:9090"
+      #  We enable debugging by passing runtime options in RuntimeConfig.scala
+      - "5005:5005"
+    environment:
+      - PORT=8080
+      - DATABASE_URL=postgres://pgoyvmcdlltekl:c2dff06687dcb35222a57f79b0ed41114ecfb65f8f72a6b9e0377e3c46e7f219@ec2-54-75-230-41.eu-west-1.compute.amazonaws.com:5432/d46aj4bg932e2n
+     # - DATABASE_USERNAME=postgres #${POSTGRES_USER:-postgres}
+     # - DATABASE_PASSWORD=4WXUmsbU6j4GE&Hvk3S*hqcqebFgo!vZi #${POSTGRES_PASSWORD:-4WXUmsbU6j4GE&Hvk3S*hqcqebFgo!vZi}
+      # Password for the keystore containing our Transport Layer Security password. Used to enable HTTPS connections.
+      # The variable name is referenced in ServerConfig.scala
+      #- TLS_KEY_STORE_PASSWORD=${TLS_KEY_STORE_PASSWORD:-9f0ht032fr09fds909SDG$3gt32f#@FDSfs}
+    networks:
+      - info-rg-network
+   # If you're on Windows, make sure you share the Windows drive used here. Go to Docker's settings -> Shared Drives
+    volumes:
+       # On the host, the directories of a volume are created automatically. Make sure directories have the permission
+       # to be written to
+      - ./logs:/logs
+  db:
+     # Use Postgres as the DBMS: https://store.docker.com/images/022689bf-dfd8-408f-9e1c-19acac32e57b
+     image: postgres:9.6.4
+     # Logging with Postgres: https://www.postgresql.org/docs/current/static/runtime-config-logging.html
+     # Postgres will log to a file. Make sure that the log directory is writable for the Postgres user
+     command: postgres -c logging_collector=on -c log_destination=stderr -c log_directory=/logs
+     environment:
+       # Provide the user name and the password via environment variables.
+       # If a variable is unset or empty, use a default value. We use these default values in application.test.conf
+       - DATABASE_URL=postgres://pgoyvmcdlltekl:c2dff06687dcb35222a57f79b0ed41114ecfb65f8f72a6b9e0377e3c46e7f219@ec2-54-75-230-41.eu-west-1.compute.amazonaws.com:5432/d46aj4bg932e2n
+       #jdbc:postgresql://postgresInfoRg:5432/postgres
+       #- DATABASE_USERNAME=postgres #${POSTGRES_USER:-postgres}
+       #- DATABASE_PASSWORD=4WXUmsbU6j4GE&Hvk3S*hqcqebFgo!vZi #${POSTGRES_PASSWORD:-4WXUmsbU6j4GE&Hvk3S*hqcqebFgo!vZi}
+       - POSTGRES_INITDB_ARGS="--auth=peer"
+     volumes:
+       # Persist Postgres' data between container invocations
+       - postgresVolume:/var/lib/postgresql/data
+       - ./logs:/logs
+     networks:
+       info-rg-network:
+         # Our application can communicate with the database using this hostname. This name is also used in
+         # application.conf and application.test.conf
+         aliases:
+           - postgresInfoRg
+
+networks:
+  info-rg-network:
+
+# Creates a named volume to persist our data. When on a non-Linux OS, the volume's data will be in the Docker VM
+# (e.g., MobyLinuxVM) in /var/lib/docker/volumes/
+volumes:
+  postgresVolume:

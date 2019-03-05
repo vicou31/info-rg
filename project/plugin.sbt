@@ -1,0 +1,5 @@
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.26")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.18")
+addSbtPlugin("se.marcuslonnberg" % "sbt-docker" % "1.5.0")
+addSbtPlugin("com.tapad" % "sbt-docker-compose" % "1.0.34")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.7.0")

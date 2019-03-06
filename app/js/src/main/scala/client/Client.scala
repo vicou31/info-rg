@@ -12,7 +12,7 @@ object Client extends LazyLogging{
   LoggerConfig.factory = PrintLoggerFactory()
 
   def main(args: Array[String]): Unit = {
-    println("deployment achieved")
+    println("develop branch")
     executeClientCodeOnPage()
   }
 

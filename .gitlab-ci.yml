@@ -87,4 +87,4 @@ deploy_to_prod:
     - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY_PROD wingrunr21/alpine-heroku-cli container:release web --app info-rg
   when: manual
   only:
-    - prod
+    - master

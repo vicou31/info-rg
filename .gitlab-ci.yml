@@ -71,7 +71,7 @@ deploy_to_dev:
     - docker tag $CONTAINER_GITLAB_DEV $CONTAINER_HEROKU_DEV
     - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
     - docker push $CONTAINER_HEROKU_DEV
-    - docker run --rm -e HEROKU_API_KEY_DEV=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app info-rg-dev
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app info-rg-dev
   when: manual
   only:
     - develop

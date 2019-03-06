@@ -12,20 +12,22 @@ variables:
   # This should prevent SBT from running out of memory when compiling
   SBT_OPTS: "-Xmx2G -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xss2M"
   # You can find this on your Gitlab repo page, under "Registry"
-  CONTAINER_GITLAB: registry.gitlab.com/vicou31/info-rg:latest
+  CONTAINER_GITLAB_PROD: registry.gitlab.com/vicou31/info-rg:prodlatest
+  CONTAINER_GITLAB_DEV: registry.gitlab.com/vicou31/info-rg:devlatest
   # It's just a tag, use whatever you want : back, front, test, staging...
   CONTAINER_TAG: latest
   # Change with the name of your Heroku app
-  CONTAINER_HEROKU: registry.heroku.com/info-rg/web
+  CONTAINER_HEROKU_PROD: registry.heroku.com/info-rg/web
+  CONTAINER_HEROKU_DEV: registry.heroku.com/info-rg-dev/web
   # Can be found on: https://dashboard.heroku.com/account under "API Key"
-  HEROKU_API_KEY: $HEROKU_PRODUCTION_API_KEY
-  # Heroku User name for login: usually an e-mail address
-  HEROKU_USER: myname@company.com
+  HEROKU_API_KEY_PROD: $HEROKU_PRODUCTION_API_KEY
+  HEROKU_API_KEY_DEV: $HEROKU_DEVELOPPEMENT_API_KEY
+
 
 # Jobs of a stage run in parallel. When all jobs of one stage have succeeded, the jobs of the next stage start
 stages:
   #- test
-  #- publish
+  - publish
   - deploy
 
 # Provides utility functions for using Docker such as "docker_login" and "docker_retag_and_push"
@@ -38,25 +40,51 @@ before_script:
 #  script:
 #    - sbt "project appJVM" test
 
-# We build the application, create a Docker image from it, and push it to GitLab's registry
-#build_image_and_push_to_registry:
-#  stage: publish
-#  script:
-#    # Log in to GitLab so we can push the image to the GitLab Docker registry
-#    - docker_login
-#    # In build.sbt we tag the image with the value of CI_BUILD_REF which is set by the GitLab Runner
-#    - sbt appJVM/dockerBuildAndPush
-#    # Retag the image with the "staging" tag
-#    - docker_retag_and_push $CI_BUILD_REF latest
-
-deploy_to_staging:
-  stage: deploy
+ #We build the application, create a Docker image from it, and push it to GitLab's registry
+build_image_and_push_dev_to_registry:
+  stage: publish
   script:
-    - docker pull $CONTAINER_GITLAB
-    - docker tag $CONTAINER_GITLAB $CONTAINER_HEROKU
-    - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
-    - docker push $CONTAINER_HEROKU
-    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app info-rg
-  when: manual
+    # Log in to GitLab so we can push the image to the GitLab Docker registry
+    - docker_login
+    # In build.sbt we tag the image with the value of CI_BUILD_REF which is set by the GitLab Runner
+    - sbt appJVM/dockerBuildAndPush
+    # Retag the image with the "staging" tag
+    - docker_retag_and_push $CI_BUILD_REF devlatest
+  only:
+    - develop
+
+build_image_and_push_prod_to_registry:
+  stage: publish
+  script:
+    # Log in to GitLab so we can push the image to the GitLab Docker registry
+    - docker_login
+    # In build.sbt we tag the image with the value of CI_BUILD_REF which is set by the GitLab Runner
+    - sbt appJVM/dockerBuildAndPush
+    # Retag the image with the "staging" tag
+    - docker_retag_and_push $CI_BUILD_REF prodlatest
   only:
     - master
+
+deploy_to_dev:
+  stage: deploy
+  script:
+    - docker pull $CONTAINER_GITLAB_DEV
+    - docker tag $CONTAINER_GITLAB_DEV $CONTAINER_HEROKU_DEV
+    - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    - docker push $CONTAINER_HEROKU_DEV
+    - docker run --rm -e HEROKU_API_KEY_DEV=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app info-rg-dev
+  when: manual
+  only:
+    - develop
+
+deploy_to_prod:
+  stage: deploy
+  script:
+    - docker pull $CONTAINER_GITLAB_PROD
+    - docker tag $CONTAINER_GITLAB_PROD $CONTAINER_HEROKU_PROD
+    - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    - docker push $CONTAINER_HEROKU_PROD
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY_PROD wingrunr21/alpine-heroku-cli container:release web --app info-rg
+  when: manual
+  only:
+    - prod

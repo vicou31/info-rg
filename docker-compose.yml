@@ -3,7 +3,7 @@ version: '3'
 
 services:
   web:
-    image: registry.gitlab.com/vicou31/info-rg:devlatest
+    image: registry.gitlab.com/vicou31/info-rg:prodlatest
     # The server uses some of these ports via ServerConfig.scala. Keep them in sync with docker.compose.yml
     ports:
       # Requests to the container are mapped from port 80 on the host to port 8080 in the container

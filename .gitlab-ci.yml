@@ -20,8 +20,7 @@ variables:
   CONTAINER_HEROKU_PROD: registry.heroku.com/info-rg/web
   CONTAINER_HEROKU_DEV: registry.heroku.com/info-rg-dev/web
   # Can be found on: https://dashboard.heroku.com/account under "API Key"
-  HEROKU_API_KEY_PROD: $HEROKU_PRODUCTION_API_KEY
-  HEROKU_API_KEY_DEV: $HEROKU_DEVELOPPEMENT_API_KEY
+  HEROKU_API_KEY: $HEROKU__API_KEY
 
 
 # Jobs of a stage run in parallel. When all jobs of one stage have succeeded, the jobs of the next stage start
@@ -84,7 +83,7 @@ deploy_to_prod:
     - docker tag $CONTAINER_GITLAB_PROD $CONTAINER_HEROKU_PROD
     - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
     - docker push $CONTAINER_HEROKU_PROD
-    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY_PROD wingrunr21/alpine-heroku-cli container:release web --app info-rg
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app info-rg
   when: manual
   only:
     - master

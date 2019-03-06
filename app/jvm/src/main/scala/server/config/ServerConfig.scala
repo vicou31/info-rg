@@ -4,10 +4,10 @@ package server.config
 import java.security.{KeyStore, SecureRandom}
 import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
 import akka.http.scaladsl.{ConnectionContext, HttpsConnectionContext}
+import scala.util.{Failure, Try}
 import slogging.LazyLogging*/
 import com.typesafe.config._
-/*
-import scala.util.{Failure, Try}*/
+
 
 /**
   * Contains configuration for our server.

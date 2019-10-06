@@ -14,7 +14,7 @@ object WelcomePageScript extends ClientScriptHelper {
 
   private def onPageLoaded() = bodyAppend(
     div(
-      p("The ", b("client"), " added this with JavaScript. Or was it Scala? 😊"),
+      p("The ", b("client"), " added this with JavaScript. Or was it Scala? After upgrade 😊"),
       a(href := AppPaths.exampleOverviewPage)("Show me something more involved.")
     )
   )

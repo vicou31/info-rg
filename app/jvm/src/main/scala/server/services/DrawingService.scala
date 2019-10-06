@@ -1,7 +1,7 @@
 package server.services
 
 import akka.http.scaladsl.server.{Directives, Route}
-import server.pages.drawing.DrawingPage
+import server.pages.DrawingPage
 import server.pages.utils.http.HttpHelper
 import shared.api.AppPaths
 

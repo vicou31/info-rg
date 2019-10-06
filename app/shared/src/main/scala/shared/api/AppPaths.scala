@@ -22,4 +22,7 @@ object AppPaths {
   val uploadFilePage = "uploadFile"
 
   val uploadFileAction = "uploadFileAction"
+
+  val memoryPage = "memory"
+
 }

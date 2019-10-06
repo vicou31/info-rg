@@ -41,13 +41,13 @@ lazy val app = crossProject.in(file("./app"))
         dockerComposeUp skipPull compile and build a new image to compose locally
         dockerComposeRestart skipPull recompile and rebuild the image
         dockerBuildAndPush build the image WITHOUT compiling and push it to registry:latest
-        DockerComposeStop stop and removes the images.
+        DockerComposeStop stop and removes the memory.
       Dev mod : sbt -D"dev.mode=true" start in dev mode
     */
     imageNames in docker := {
 
       val gitLabRepository = s"registry.gitlab.com/vicou31/${BuildConfig.appName}"
-      val defaultTag = "latest"
+      val defaultTag = if(inDevMode) "devlatest" else "prodlatest"
       // Tag the image with the value of the environment variable provided by GitLab continuous integration
       val imageTag = sys.env.getOrElse("CI_BUILD_REF", defaultTag)
       Seq(

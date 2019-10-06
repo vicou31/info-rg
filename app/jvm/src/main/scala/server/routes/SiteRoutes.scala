@@ -3,7 +3,7 @@ package server.routes
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, MediaTypes, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
 import server.pages.utils.http.HttpHelper
-import server.resources.AppImages
+import shared.resources.path.Images
 
 /**
   * Routes that pertain to the general web site and not to a specific page or service.
@@ -14,7 +14,7 @@ object SiteRoutes extends Directives {
 
   val faviconRoute: Route =
     path("favicon.ico")(
-      getFromResource(AppImages.favicon, MediaTypes.`image/x-icon`)
+      getFromResource(Images.favicon, MediaTypes.`image/x-icon`)
     )
 
   val robotsTxtRoute: Route = {

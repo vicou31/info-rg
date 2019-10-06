@@ -1,7 +1,7 @@
 package shared.utils
 
 /**
-  * Helps with [[Either]]s
+  * Helps with [[Eithers]]
   * <p>
   * Created by Matthias Braun on 1/7/2017.
   */

@@ -5,7 +5,6 @@ import java.util.Locale
 
 import buildinfo.BuildInfo
 import server.pages.gui.PageTitle
-import server.pages.styles.SharedStyles
 import shared.pages.PageId
 import slogging.LazyLogging
 import scalatags.{Escaping, Text}
@@ -14,6 +13,7 @@ import scalatags.Text.all._
 import scalatags.Text.tags2.title
 import scalatags.Text.tags2.style
 import scalatags.stylesheet.StyleSheet
+import shared.resources.css.SharedStyles
 
 /**
   * Helps building web pages which the servers sends to the client.
@@ -84,8 +84,10 @@ trait PageUtils extends LazyLogging {
       link(rel := "stylesheet", href := pureCss),
       // Add the content of our custom style sheet for the page after the Pure CSS file so our styles get precedence
       // over properties defined in Pure CSS
-      if (styleSheet != SharedStyles.emptyStyleSheet)
+      if (styleSheet != SharedStyles.emptyStyleSheet){
+        logger.warn(s"${styleSheet.styleSheetText} loaded")
         style(`type` := "text/css")(styleSheet.styleSheetText)
+      }
       else raw("")
     )
 }

@@ -3,7 +3,7 @@ version: '3'
 
 services:
   web:
-    image: registry.gitlab.com/vicou31/info-rg:prodlatest
+    image: registry.gitlab.com/vicou31/info-rg:devlatest
     # The server uses some of these ports via ServerConfig.scala. Keep them in sync with docker.compose.yml
     ports:
       # Requests to the container are mapped from port 80 on the host to port 8080 in the container
@@ -27,6 +27,7 @@ services:
        # On the host, the directories of a volume are created automatically. Make sure directories have the permission
        # to be written to
       - ./logs:/logs
+      - ./tmp:/tmp
   db:
      # Use Postgres as the DBMS: https://store.docker.com/images/022689bf-dfd8-408f-9e1c-19acac32e57b
      image: postgres:9.6.4

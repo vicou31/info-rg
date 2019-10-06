@@ -1,7 +1,7 @@
 image: logimethods/docker-sbt-docker
 
 services:
-  # We start the Docker daemon to be able to pull and push images
+  # We start the Docker daemon to be able to pull and push memory
   # This should also include docker-compose: https://docs.gitlab.com/ce/ci/docker/using_docker_build.html#use-docker-in-docker-executor
   - docker:dind
 

@@ -5,7 +5,7 @@ import akka.http.scaladsl.server.{Directives, Route}
 import shared.pages.PageId
 import slogging.LazyLogging
 
-/**
+/*
   * Logs [[HttpHeader]]s of clients that connect to our server.
   * <p>
   * Created by Matthias Braun on 1/9/2017.

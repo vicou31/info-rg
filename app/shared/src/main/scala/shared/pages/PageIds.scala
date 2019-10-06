@@ -29,4 +29,6 @@ object PageIds {
   val fileUpload = PageId("file-upload-page-id")
 
   val notFound = PageId("page-not-found-id")
+
+  val memory = PageId("memory-page-id")
 }

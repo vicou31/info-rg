@@ -1,8 +1,13 @@
+import ScalaConfig.commonCompilerOptions
 import sbt.Def
 
 object ScalaConfig {
   def compilerOptions(inDevMode: Boolean) = {
-    Def.setting(commonCompilerOptions)
+    
+    Def.setting(commonCompilerOptions
+      ++ (if(!inDevMode) Seq("-Xelide-below", "OFF") else Nil)
+    )
+  
   }
 
   private val commonCompilerOptions= Seq(
@@ -19,7 +24,8 @@ object ScalaConfig {
     "-Xlint",
     // Enable deprecation warnings for features that will be removed from Scala in the future
     "-Xfuture"
-  )
+  )  
+
 
   val version="2.12.8"
 

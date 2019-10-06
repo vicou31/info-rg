@@ -3,6 +3,7 @@ package server.pages.utils.http
 import akka.http.scaladsl.model.{StatusCodes, _}
 import akka.http.scaladsl.server.{Directives, Route}
 import server.pages.Page
+import slogging.LazyLogging
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -11,29 +12,24 @@ import scala.concurrent.ExecutionContext.Implicits.global
   * <p>
   * Created by Matthias Braun on 1/21/2017.
   */
-object HttpHelper extends Directives {
-
-
+object HttpHelper extends Directives with LazyLogging{
   /**
     * Logs the headers of a client that requested a resource and responds with the given `responseBody`
     * and `statusCode`.
     */
-  def logHeadersAndRespondWith(responseBody: ResponseEntity,
-                               statusCode: StatusCode,
-                               resourceName: String): Route =
+  def logHeadersAndRespondWith(responseBody: ResponseEntity, statusCode: StatusCode, resourceName: String): Route =
 
-    HeaderLogger.logResourceRequest(resourceName,
-      complete(HttpResponse(status = statusCode, entity = responseBody)
-      )
-    )
+    HeaderLogger.logResourceRequest(resourceName, complete(HttpResponse(status = statusCode, entity = responseBody)))
 
   /**
     * Logs the headers of a client that requested a `page` and responds with that page and status code 200 (OK) if no other code is given.
     *
     * If the client accepts encoded responses, we will encode the respond using gzip or deflate.
     **/
-  def logHeadersAndRespondWithEncoded(page: Page, statusCode: StatusCode = StatusCodes.OK): Route =
+  def logHeadersAndRespondWithEncoded(page: Page, statusCode: StatusCode = StatusCodes.OK): Route ={
+    logger.warn(s"page requested ${page.pageId}")
     HeaderLogger.logPageRequest(page.pageId, respondEncoded(page, statusCode))
+  }
 
   /**
     * Responds with an encoded `page` and include the given `statusCode` in the response.

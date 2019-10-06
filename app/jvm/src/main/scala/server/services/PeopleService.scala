@@ -1,8 +1,7 @@
 package server.services
 
 import akka.http.scaladsl.server.{Directives, Route}
-import server.pages.peopleform.PeopleFormPage
-import server.pages.peopleoverview.PeopleListPage
+import server.pages.{PeopleFormPage, PeopleListPage}
 import server.pages.utils.http.HttpHelper
 import server.persistency.AppDb
 import shared.api.{AppPaths, PeopleAjaxApi}

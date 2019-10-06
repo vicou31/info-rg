@@ -3,7 +3,7 @@ package server
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.{AsyncWordSpec, Matchers}
-import server.pages.peopleform.PeopleFormPage
+import server.pages.PeopleFormPage
 import server.services.PeopleService
 import shared.api.AppPaths._
 import slogging.{LoggerConfig, SLF4JLoggerFactory}

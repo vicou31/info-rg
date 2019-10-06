@@ -1,7 +1,7 @@
 package client
 
 import client.pages.personform.PeopleFormScript
-import client.pages.{DrawingPageScript, FileUploadPageScript, WelcomePageScript}
+import client.pages.{DrawingPageScript, FileUploadPageScript, MemoryPageScript, WelcomePageScript}
 import org.scalajs.dom._
 import shared.pages.{PageId, PageIds}
 import slogging.{LazyLogging, LoggerConfig, PrintLoggerFactory}
@@ -12,7 +12,7 @@ object Client extends LazyLogging{
   LoggerConfig.factory = PrintLoggerFactory()
 
   def main(args: Array[String]): Unit = {
-    println("develop branch")
+    println("develop branch reload up")
     executeClientCodeOnPage()
   }
 
@@ -25,6 +25,7 @@ object Client extends LazyLogging{
       case PageIds.form => PeopleFormScript.execute()
       case PageIds.drawing => DrawingPageScript.execute()
       case PageIds.fileUpload => FileUploadPageScript.execute()
+      case PageIds.memory => MemoryPageScript.execute()
       case otherPageId => logger.warn("There's no client code for a page with this head ID '{}'", otherPageId)
 
     }

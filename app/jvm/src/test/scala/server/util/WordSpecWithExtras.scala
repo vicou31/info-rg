@@ -1,12 +1,12 @@
 package server.util
 
 import org.scalatest.concurrent.{Eventually, IntegrationPatience}
-import org.scalatest.{ConfigMap, Matchers, WordSpec, fixture}
+import org.scalatest.{ Matchers, fixture}
 import slogging.{LazyLogging, LoggerConfig, SLF4JLoggerFactory}
 
 /**
   * Bundles a couple of traits and abstract classes that allows extending classes to have asynchronous
-  * [[WordSpec]]s with the [[ConfigMap]] fixture, logging, [[Matchers]] and the [[DockerSpecUtil]].
+  * WordSpecs with the ConfigMapFixture , logging, [[Matchers]] and the [[DockerSpecUtil]].
   * <p>
   * Created by Matthias Braun on 5/26/2017.
   */

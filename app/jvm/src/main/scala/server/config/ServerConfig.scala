@@ -14,6 +14,7 @@ import com.typesafe.config._
   * <p>
   * Created by Matthias Braun on 6/1/2017.
   */
+
 object ServerConfig {
 
   /**
@@ -33,12 +34,14 @@ object ServerConfig {
     * "localhost" and "127.0.0.1" won't work here but connecting to the site from a browser using "localhost" works
     * fine if the server runs locally.
     */
+
   val interface = "0.0.0.0"
 
-  /**
-    * Contains configuration for transport layer security so server and client can use HTTPS.
-    */
- /* object TLS extends LazyLogging {
+  /*
+     Contains configuration for transport layer security so server and client can use HTTPS.
+
+
+   object TLS extends LazyLogging {
     // Map this port of the container to 443 of the host in docker-compose.yml to enable HTTPS connections
     val port = 9090
 

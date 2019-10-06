@@ -3,9 +3,8 @@ package server.services
 import java.nio.file.Paths
 
 import akka.http.scaladsl.server.{Directives, Route}
-
 import akka.stream.scaladsl.FileIO
-import server.pages.fileupload.FileUploadPage
+import server.pages.FileUploadPage
 import server.pages.utils.http.HttpHelper
 import shared.api.AppPaths
 import shared.pages.elements.FileUploadElements

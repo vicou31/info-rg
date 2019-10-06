@@ -6,8 +6,4 @@ out/
 logs/
 target/
 tls
-
-
-
-
-
+tmp

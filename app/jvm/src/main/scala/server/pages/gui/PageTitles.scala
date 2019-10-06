@@ -13,7 +13,7 @@ object PageTitles {
   val peopleList = PageTitle("Saved people")
   val drawing = PageTitle("Drawing")
   val uploadFile = PageTitle("Upload file")
-
+  val memory= PageTitle("Memory App")
   val notFound = PageTitle("Page not found")
 }
 

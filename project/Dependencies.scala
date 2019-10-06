@@ -7,12 +7,19 @@ object Dependencies {
   private val autowireVersion = "0.2.6"
   private val sloggingVersion = "0.6.1"
   private val scalaTagsVersion = "0.6.7"
+  private val scalaCssVersion = "0.5.3"
   private val scalajsDomVersion = "0.9.6"
   private val scalajsReactVersion = "1.4.0"
+  private val scalajsJQueryVersion =  "0.9.1"
 
   object client {
     val jsDependencies = Def.setting(
       Seq(
+        // Used to add classes to HTML elements and also remove them: https://mvnrepository.com/artifact/org.webjars/jquery
+        "org.webjars" % "jquery" % "3.1.1"
+          / "3.1.1/jquery.js"
+          minified "jquery.min.js",
+
         "org.webjars.npm" % "react" % "16.7.0"
           / "umd/react.development.js"
           minified "umd/react.production.min.js"
@@ -36,6 +43,9 @@ object Dependencies {
     val scalaJsDependencies = Def.setting(Seq(
         // Used to produce HTML and CSS with Scala on the client side: https://github.com/lihaoyi/scalatags
         "com.lihaoyi" %%% "scalatags" % scalaTagsVersion,
+        "com.github.japgolly.scalacss" %%% "core" % scalaCssVersion,
+        "com.github.japgolly.scalacss" %%% "ext-react" % "0.5.3",
+        "com.github.japgolly.scalacss" %%% "ext-scalatags" % "0.5.3",
 
         // Serializes data between client and server: https://github.com/lihaoyi/upickle-pprint
         "com.lihaoyi" %%% "upickle" % uPickleVersion,
@@ -44,7 +54,7 @@ object Dependencies {
         "com.lihaoyi" %%% "autowire" % autowireVersion,
 
         // A type facade for jQuery so we can use the JavaScript library in a type-safe manner: https://github.com/scala-js/scala-js-jquery
-        "be.doeraene" %%% "scalajs-jquery" % "0.9.1",
+        "be.doeraene" %%% "scalajs-jquery" % scalajsJQueryVersion,
 
         // Logging: https://github.com/jokade/slogging
         "biz.enef" %%% "slogging" % sloggingVersion,
@@ -74,6 +84,7 @@ object Dependencies {
 
       // The server creates HTML pages and CSS that it sends to the client
       "com.lihaoyi" %% "scalatags" % scalaTagsVersion,
+      "com.github.japgolly.scalacss" %% "core" % scalaCssVersion,
 
       // Serializes data between client and server: https://github.com/lihaoyi/upickle-pprint
       "com.lihaoyi" %% "upickle" % uPickleVersion,

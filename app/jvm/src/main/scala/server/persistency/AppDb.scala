@@ -2,7 +2,6 @@ package server.persistency
 
 import java.util.UUID
 
-import com.typesafe.config.ConfigFactory
 import shared.data.Person
 import slick.jdbc.DatabaseUrlDataSource
 import slick.jdbc.PostgresProfile.api._

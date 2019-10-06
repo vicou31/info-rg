@@ -6,13 +6,11 @@ import akka.http.scaladsl.server.{RejectionHandler, Route}
 import akka.http.scaladsl.{ConnectionContext, Http}
 import akka.stream.ActorMaterializer
 import server.config.ServerConfig
-import server.pages.NotFoundPage
-import server.pages.welcome.WelcomePage
-import server.pages.exampleoverview.ExamplesOverviewPage
+import server.pages.{ExamplesOverviewPage, NotFoundPage, WelcomePage}
 import server.pages.utils.http.HttpHelper
 import server.routes.SiteRoutes
 import server.routes.ajax.ServerAjaxer
-import server.services.{DrawingService, FileUploadService, PeopleService, StreamService}
+import server.services._
 import shared.api.AppPaths
 import slogging.LazyLogging
 
@@ -22,11 +20,11 @@ import scala.util.{Failure, Success}
   * The server lets clients use a couple of services such as saving people data to a database, uploading files, and
   * streaming data.
   */
-object AppServer
-  extends PeopleService
+object AppServer extends PeopleService
     with FileUploadService
     with StreamService
     with DrawingService
+    with MemoryService
     with LazyLogging {
 
   /**
@@ -64,10 +62,8 @@ object AppServer
     * Starts the server.
     */
   def up(): Unit = {
-
-
     // Runs the server's actors which handle HTTP requests
-    implicit val actorSystem = ActorSystem("scala-js-example-actor-system")
+    implicit val actorSystem = ActorSystem("info-rg-actor-system")
 
     // The materializer assigns threads to the actors
     implicit val materializer = ActorMaterializer()
@@ -96,6 +92,7 @@ object AppServer
         fileUploadRoute ~
         streamRoute ~
         drawingRoute ~
+        memoryRoute ~
         SiteRoutes.faviconRoute ~
         SiteRoutes.robotsTxtRoute ~
         // Respond to an Ajax request
